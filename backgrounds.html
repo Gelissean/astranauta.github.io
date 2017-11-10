@@ -20,6 +20,8 @@
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="icon" href="favicon.png">
 
+	<style id="dynamicStyle"></style> <!-- populated with JS -->
+	<script type="text/javascript" src="js/styleswitch.js"></script>
 </head>
 
 <body>
@@ -56,9 +58,12 @@
 				<ul class="dropdown-menu">
 					<li role="presentation"><a href="bestiary.html">Bestiary</a></li>
 					<li role="presentation"><a href="conditions.html">Conditions</a></li>
+					<li role="presentation"><a href="cults.html">Cults</a></li>
 					<li role="presentation"><a href="items.html">Items</a></li>
-					<li role="presentation"><a href="spells.html">Spells</a></li>
 					<li role="presentation"><a href="rewards.html">Other Rewards</a></li>
+					<li role="presentation"><a href="psionics.html">Psionics</a></li>
+					<li role="presentation"><a href="spells.html">Spells</a></li>
+					<li role="presentation"><a href="variantrules.html">Variant Rules</a></li>
 				</ul>
 			</li>
 			<li role="presentation"><a href="statgen.html">Statgen</a></li>
@@ -69,6 +74,9 @@
 					<li role="presentation"><a href="editor.html">WYSIWYG Editor</a></li>
 				</ul>
 			</li>
+			<li role="presentation">
+				<a class="nightModeToggle" href="#" onclick="styleSwitcher.toggleActiveStyleSheet(); return false;"><script>document.write(styleSwitcher.getActiveStyleSheet() === StyleSwitcher.STYLE_DAY ? "Night Mode" : "Day Mode")</script></a>
+			</li>
 		</ul>
 	</nav>
 	<main class="container bodyContent">
@@ -78,8 +86,8 @@
 				<div class="input-group">
 					<input type="search" id="search" class="search form-control" placeholder="Find background...">
 					<span class="input-group-btn">
-							<button class="btn btn-default" type="button" id="reset">Reset</button>
-						</span>
+						<button class="btn btn-default" type="button" id="reset">Reset</button>
+					</span>
 				</div>
 				<form id="filtertools">
 					<select class="sourcefilter">
@@ -119,12 +127,12 @@
 
 	</footer>
 
-	<script type="text/javascript" src="js/page-backgrounds.js"></script>
-	<script type="text/javascript" src="data/backgrounds.json"></script>
-	<script type="text/javascript" src="js/list.js"></script>
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/bootstrap.js"></script>
-
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/history.js"></script>
+	<script type="text/javascript" src="js/backgrounds.js"></script>
+	<script type="text/javascript" src="lib/list.js"></script>
+	<script type="text/javascript" src="lib/jquery.js"></script>
+	<script type="text/javascript" src="lib/bootstrap.js"></script>
 
 </body>
 

@@ -20,6 +20,8 @@
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="icon" href="favicon.png">
 
+	<style id="dynamicStyle"></style> <!-- populated with JS -->
+	<script type="text/javascript" src="js/styleswitch.js"></script>
 </head>
 
 <body>
@@ -56,9 +58,12 @@
 				<ul class="dropdown-menu">
 					<li role="presentation"><a href="bestiary.html">Bestiary</a></li>
 					<li role="presentation"><a href="conditions.html">Conditions</a></li>
+					<li role="presentation"><a href="cults.html">Cults</a></li>
 					<li role="presentation" class="active"><a href="items.html">Items</a></li>
-					<li role="presentation"><a href="spells.html">Spells</a></li>
 					<li role="presentation"><a href="rewards.html">Other Rewards</a></li>
+					<li role="presentation"><a href="psionics.html">Psionics</a></li>
+					<li role="presentation"><a href="spells.html">Spells</a></li>
+					<li role="presentation"><a href="variantrules.html">Variant Rules</a></li>
 				</ul>
 			</li>
 			<li role="presentation"><a href="statgen.html">Statgen</a></li>
@@ -69,41 +74,27 @@
 					<li role="presentation"><a href="editor.html">WYSIWYG Editor</a></li>
 				</ul>
 			</li>
+			<li role="presentation">
+				<a class="nightModeToggle" href="#" onclick="styleSwitcher.toggleActiveStyleSheet(); return false;"><script>document.write(styleSwitcher.getActiveStyleSheet() === StyleSwitcher.STYLE_DAY ? "Night Mode" : "Day Mode")</script></a>
+			</li>
 		</ul>
 	</nav>
 	<main class="container bodyContent">
 
 		<div class="row">
-			<div class="col-sm-6" id="itemcontainer">
-				<div class="input-group" style="vertical-align: top;">
+			<div class="col-sm-6" id="listcontainer">
+				<div class="input-group" id="filter-search-input-group" style="vertical-align: top;">
 					<input type="search" id="search" class="search form-control" placeholder="Find item...">
 					<span class="input-group-btn">
-							<button class="btn btn-default" type="button" id="reset">Reset</button>
-						</span>
+						<button class="btn btn-default" type="button" id="reset">Reset</button>
+					</span>
 				</div>
 				<form id="filtertools">
-					<select class="sourcefilter">
-							<option value="All">All Sources</option>
-						</select>
-					<select class="typefilter" value="All">
-							<option value="All">All Types</option>
-						</select>
-					</select>
-					<select class="rarityfilter">
-						<option value="All">All Rarities</option>
-						<option value="None">None</option>
-						<option value="Common">Common</option>
-						<option value="Uncommon">Uncommon</option>
-						<option value="Rare">Rare</option>
-						<option value="Very Rare">Very Rare</option>
-						<option value="Legendary">Legendary</option>
-						<option value="Artifact">Artifact</option>
-					</select>
 					<span class="sortlabel btn-group">
 						<button class="col-xs-4 sort btn btn-default btn-xs" type="button" sort="name" sortby="asc">Name</button>
-						<button class="col-xs-3 sort btn btn-default btn-xs" type="button" sort="type" sortby="asc">Type</button>
-						<button class="col-xs-2 sort btn btn-default btn-xs" type="button" sort="source" sortby="asc">Source</button>
-						<button class="col-xs-3 sort btn btn-default btn-xs" type="button" sort="rarity" sortby="asc">Rarity</button>
+						<button class="col-xs-4 col-xs-4-3 sort btn btn-default btn-xs" type="button" sort="type" sortby="asc">Type</button>
+						<button class="col-xs-1 col-xs-1-7 sort btn btn-default btn-xs" type="button" sort="source" sortby="asc">Source</button>
+						<button class="col-xs-2 sort btn btn-default btn-xs" type="button" sort="rarity" sortby="asc">Rarity</button>
 					</span>
 				</form>
 				<h3 data-toggle="mundane">Mundane</h3>
@@ -149,11 +140,14 @@
 
 	</footer>
 
-	<script type="text/javascript" src="js/page-items.js"></script>
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/filter.js"></script>
+	<script type="text/javascript" src="js/history.js"></script>
+	<script type="text/javascript" src="js/items.js"></script>
 	<script type="text/javascript" src="data/items.json"></script>
-	<script type="text/javascript" src="js/list.js"></script>
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/bootstrap.js"></script>
+	<script type="text/javascript" src="lib/list.js"></script>
+	<script type="text/javascript" src="lib/jquery.js"></script>
+	<script type="text/javascript" src="lib/bootstrap.js"></script>
 </body>
 
 </html>

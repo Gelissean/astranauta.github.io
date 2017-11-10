@@ -22,6 +22,8 @@
 	<link rel="stylesheet" href="css/style.css">
 	<link rel="icon" href="favicon.png">
 
+	<style id="dynamicStyle"></style> <!-- populated with JS -->
+	<script type="text/javascript" src="js/styleswitch.js"></script>
 </head>
 
 <body>
@@ -58,9 +60,12 @@
 				<ul class="dropdown-menu">
 					<li role="presentation"><a href="bestiary.html">Bestiary</a></li>
 					<li role="presentation"><a href="conditions.html">Conditions</a></li>
+					<li role="presentation"><a href="cults.html">Cults</a></li>
 					<li role="presentation"><a href="items.html">Items</a></li>
-					<li role="presentation"><a href="spells.html">Spells</a></li>
 					<li role="presentation"><a href="rewards.html">Other Rewards</a></li>
+					<li role="presentation"><a href="psionics.html">Psionics</a></li>
+					<li role="presentation"><a href="spells.html">Spells</a></li>
+					<li role="presentation"><a href="variantrules.html">Variant Rules</a></li>
 				</ul>
 			</li>
 			<li role="presentation"><a href="statgen.html">Statgen</a></li>
@@ -70,6 +75,9 @@
 					<li role="presentation"><a href="converter.html">Stat Block to JSON</a></li>
 					<li role="presentation"><a href="editor.html">WYSIWYG Editor</a></li>
 				</ul>
+			</li>
+			<li role="presentation">
+				<a class="nightModeToggle" href="#" onclick="styleSwitcher.toggleActiveStyleSheet(); return false;"><script>document.write(styleSwitcher.getActiveStyleSheet() === StyleSwitcher.STYLE_DAY ? "Night Mode" : "Day Mode")</script></a>
 			</li>
 		</ul>
 	</nav>
@@ -102,8 +110,8 @@
 				<p>Races.html lists each of the races in D&D 5e, including subraces and variants.</p>
 			</div>
 			<div class="col-sm-6">
-				<h4><a href="spells.html">Spells</a></h4>
-				<p>Spells.html lists all of the official spells in D&D 5e. The list can be easily searched and filtered, and the entries can be shared through the generated URL.</p>
+				<h4><a href="spells.html">Spells</a>/<a href="psionics.html">Psionics</a></h4>
+				<p>Spells.html lists all of the official spells in D&D 5e. Psionics.html lists all psionics in the UA: The Mystic Class. Both lists can be easily searched and filtered and the entries can be shared through the generated URL.</p>
 				<h4><a href="crcalculator.html">CR Calc</a></h4>
 				<p>CRcalculator.html provides a verbose, in-depth Challenge Rating calculator, for determining the CR of custom monsters made for D&D 5e.</p>
 			</div>
@@ -111,16 +119,17 @@
 		<div class="row">
 			<div class="col-sm-12">
 				<h3>Use Roll20?</h3>
-				<p>You may be interested in <a href="https://github.com/astranauta/5etoolsR20/raw/master/5etoolsR20.user.js">5etoolsR20</a>! This userscript allows you to import much of 5etools' data without paying a dime.</p>
+				<p>Get Greasemonkey (Firefox) or Tampermonkey (Chrome). Install the script using this <a href="https://github.com/astranauta/5etoolsR20/raw/master/5etoolsR20.user.js">link</a>! This userscript allows you to import much of 5etools' data without paying a dime.</p>
+				<h3>Use Discord?</h3>
+				<p>Now you can join our server using <a href="https://discord.gg/B2J9gM9">this</a> link!</p>
 			</div>
 		</div>
 	</main>
 	<footer class="container">
 	</footer>
-	<script type="text/javascript" src="js/jquery.js"></script>
-	<script type="text/javascript" src="js/bootstrap.js"></script>
 
-
+	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="lib/jquery.js"></script>
+	<script type="text/javascript" src="lib/bootstrap.js"></script>
 </body>
-
 </html>
