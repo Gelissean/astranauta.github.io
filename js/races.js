@@ -1,7 +1,14 @@
-window.onload = function load() {
-	tabledefault = $("#stats").html();
+const JSON_URL = "data/races.json";
 
-	var racelist = racedata.compendium.race;
+window.onload = function load() {
+	loadJSON(JSON_URL, onJsonLoad)
+};
+
+let racelist;
+function onJsonLoad (data) {
+	tableDefault = $("#stats").html();
+
+	racelist = data.race;
 
 	for (var i = 0; i < racelist.length; i++) {
 		var currace = racelist[i];
@@ -47,11 +54,11 @@ window.onload = function load() {
 	initHistory()
 }
 
+const renderer = new EntryRenderer();
 function loadhash (id) {
-	$("#stats").html(tabledefault);
+	$("#stats").html(tableDefault);
 	$("#stats td").show();
 
-	var racelist = racedata.compendium.race;
 	var currace = racelist[id];
 
 	var name = currace.name;
@@ -64,20 +71,36 @@ function loadhash (id) {
 	var ability = utils_getAbilityData(currace.ability);
 	$("td#ability span").html(ability.asText);
 
-	var speed = currace.speed + (currace.speed === "Varies" ? "" : "ft. ");
+	let speed;
+	if (typeof currace.speed === "string") {
+		speed = currace.speed + (currace.speed === "Varies" ? "" : "ft. ");
+	} else {
+		speed = currace.speed.walk + "ft.";
+		if (currace.speed.climb) speed += `, climb ${currace.speed.climb}ft.`
+	}
 	$("td#speed span").html(speed);
 	if (speed === "") $("td#speed").hide();
 
 	var traitlist = currace.trait;
-	$("tr.trait").remove();
+	if (traitlist) {
+		$("tr.trait").remove();
 
-	let statsText = "<tr class='text'><td colspan='6'>";
-	for (let n = 0; n < traitlist.length; ++n) {
-		const trait = traitlist[n];
+		let statsText = "<tr class='text'><td colspan='6'>";
+		for (let n = 0; n < traitlist.length; ++n) {
+			const trait = traitlist[n];
 
-		const header = "<span class='name'>" + trait.name + ".</span> ";
-		statsText += utils_combineText(traitlist[n].text, "p", header)
+			const header = "<span class='name'>" + trait.name + ".</span> ";
+			statsText += utils_combineText(traitlist[n].text, "p", header)
+		}
+		statsText += "</td></tr>";
+		$('table#stats tbody tr:last').before(statsText);
+	} else if (currace.entries) {
+		const renderStack = [];
+		const faux = {"type": "entries", "entries": currace.entries};
+
+		renderer.recursiveEntryRender(faux, renderStack, 1, "<tr class='text'><td colspan='6'>", "</td></tr>", true);
+
+
+		$('table#stats tbody tr:last').before(renderStack.join(""));
 	}
-	statsText += "</td></tr>";
-	$('table#stats tbody tr:last').before(statsText);
 }

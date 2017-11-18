@@ -1,55 +1,95 @@
+const JSON_URL = "data/rules.json";
+
 window.onload = function load() {
-	contentdefault = $("#rulescontent").html();
+	loadJSON(JSON_URL, onJsonLoad);
+};
 
-	var ruleslist = rulesdata.compendium.rules;
+let rulesList;
+let tableDefault;
 
-	for (var i = 0; i < ruleslist.length; i++) {
-		var currules = ruleslist[i];
-		var name = currules.name;
-		var basedon = "";
-		var rulesid = currules.id.toString();
-		$("ul.rules."+currules.parentlist).append("<li><a id='"+i+"' href='#"+encodeURI(name).toLowerCase()+"' title='"+name+"'><span class='name col-xs-12'>"+name+"</span> <span class='id' style='display: none;'>"+rulesid+"</span></a></li>");
+const entryRenderer = new EntryRenderer();
+
+function onJsonLoad(data) {
+	rulesList = data;
+	tableDefault = $("#stats").html();
+
+	const filterAndSearchBar = document.getElementById(ID_SEARCH_BAR);
+	const filterList = [];
+	const sourceFilter = new Filter("Source", FLTR_SOURCE, [], parse_sourceJsonToFull);
+    //, Filter.asIs
+	const groupFilter = new Filter("Group", FLTR_RULE_GROUP, [], Filter.asIs, Filter.asIs);
+	filterList.push(sourceFilter);
+    filterList.push(groupFilter);
+	const filterBox = new FilterBox(filterAndSearchBar, filterList);
+
+	for (let i = 0; i < rulesList.length; i++) {
+		const curRule = rulesList[i];
+        entriesList = getChildEntries(curRule);
+        hiddenstring = entriesList.toString();
+        
+		// populate table
+		$("ul.rules").append(`<li ${FLTR_RULE_GROUP}='${curRule.parentlist}'><a id='${i}' href='#${encodeForHash(curRule.name)}_${encodeForHash(curRule.parentlist)}' title='${curRule.name}'><span class='name col-xs-6'>${curRule.name} <span class='hidden'>${hiddenstring}</span></span><span class='parentlist col-xs-4' title='${parse_sourceJsonToFull(curRule.parentlist)}'>${parse_sourceJsonToAbv(curRule.parentlist)}</span><span class='source col-xs-2' title='${parse_sourceJsonToFull(curRule.Source)}'>${parse_sourceJsonToAbv(curRule.Source)}</span></a></li>`);
+
+		// populate filters
+		if ($.inArray(curRule.parentlist, groupFilter.items) === -1) {
+			groupFilter.items.push(curRule.parentlist);
+		}
+        if ($.inArray(curRule.Source, sourceFilter.items) === -1) {
+			sourceFilter.items.push(curRule.Source);
+		}
 	}
 
-	var options = {
-		valueNames: ['name', 'id'],
+	const list = search({
+		valueNames: ['name', 'parentlist', 'source'],
 		listClass: "rules"
-	}
-
-	const list = new List("listcontainer", options);
-	list.sort ("name");
-
-	$("ul.list.rules").each(function() {
-		$(this).children("li").sort(function(a, b) {
-			var sorta = $(a).children("span.id").text();
-			var sortb = $(b).children("span.id").text();
-			return (sorta > sortb) ? 1 : -1;
-		}).appendTo(this);
 	});
 
+	groupFilter.items.sort(ascSort);
+
+	// filtering function
+	$(filterBox).on(
+		FilterBox.EVNT_VALCHANGE,
+		function () {
+			list.filter(function(item) {
+				const f = filterBox.getValues();
+                const r = rulesList[$(item.elm).attr(FLTR_ID)];
+                
+                const rightSource = f[sourceFilter.header][FilterBox.VAL_SELECT_ALL] || f[sourceFilter.header][r.Source]
+                const rightGroup = f[groupFilter.header][FilterBox.VAL_SELECT_ALL] || f[groupFilter.header][groupFilter.valueFunction($(item.elm).attr(groupFilter.storageAttribute))]
+				return rightSource && rightGroup;
+			});
+		}
+	);
+
+	// add filter reset to reset button
+	document.getElementById(ID_RESET_BUTTON).addEventListener(EVNT_CLICK, function() {filterBox.reset();}, false);
+
+	filterBox.render();
 	initHistory()
-
-	// reset button
-	$("button#reset").click(function() {
-		$("#filtertools select").val("All");
-		$("#search").val("");
-		list.search("");
-		list.filter();
-		list.sort("names");
-		list.update();
-	})
-
-	$("#listcontainer h4").click(function() {
-		$(this).next().slideToggle();
-	}).css("cursor", "pointer");
 }
 
 function loadhash (id) {
-	$("#rulescontent").html(contentdefault);
+	// reset details pane to initial HTML
+	$("#stats").html(tableDefault);
 
-	var ruleslist = rulesdata.compendium.rules;
-	var currules = ruleslist[id];
+	const curRule = rulesList[id];
 
-	$("#rulescontent").html(currules.htmlcontent);
-	$("#rulescontent").prepend(`<h1>`+currules.name+`</h1>`)
+
+	$("th#name").html(curRule.name);
+
+	// build text list and display
+	$("tr.text").remove();
+	const textStack = [];
+	entryRenderer.recursiveEntryRender(curRule, textStack);
+	$("tr#text").after("<tr class='text'><td colspan='6'>" + textStack.join("") + "</td></tr>");
+}
+
+function getChildEntries(parent, topLevel=true){ 
+    if(typeof parent.type === 'undefined' || !(parent.type == 'entries' || parent.type == 'section'))
+        return [];
+    (topLevel)? childList = [] : childList = childList.concat([parent.name]);
+    for (let i = 0; i < parent.entries.length; i++) {
+        getChildEntries(parent.entries[i], false);
+    }
+    return childList;
 }

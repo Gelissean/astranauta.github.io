@@ -79,38 +79,46 @@
 			</li>
 		</ul>
 	</nav>
-	<main class="container bodyContent">
-
-		<div class="row">
-			<div class="col-sm-12">
-				<aside class="col-sm-3" id="listcontainer">
-
-					<ul class="list rules undefined" style="display: none;"></ul>
-					<h4>Character Creation</h4>
-					<ul class="list rules charactercreation"></ul>
-					<h4>Equipment</h4>
-					<ul class="list rules equipment"></ul>
-					<h4>Playing the Game</h4>
-					<ul class="list rules playingthegame"></ul>
-					<h4>Running the Game</h4>
-					<ul class="list rules runningthegame"></ul>
-					<h4>Setting</h4>
-					<ul class="list rules setting"></ul>
-					<h4>Unearthed Arcana</h4>
-					<ul class="list rules unearthedarcana"></ul>
-				</aside>
-
-				<div id="rulescontent">
-
-				</div>
-			</div>
-		</div>
-	</main>
+    <main class="container bodyContent">
+        <div class="row">
+            <div class="col-sm-6" id="listcontainer">
+                <div class="input-group" id="filter-search-input-group">
+                    <input type="search" id="search" class="search form-control" placeholder="Find rule...">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default" type="button" id="reset">Reset</button>
+                    </span>
+                </div>
+                <form id="filtertools">
+                    <span class="sortlabel btn-group">
+                        <button class="col-xs-6 sort btn btn-default btn-xs" type="button" data-sort="name">Name</button>
+                        <button class="col-xs-4 sort btn btn-default btn-xs" type="button" data-sort="parentlist">Chapter</button>
+                        <button class="col-xs-2 sort btn btn-default btn-xs" type="button" data-sort="source">Source</button>
+                    </span>
+                </form>
+                <ul class="list rules"></ul>
+            </div>
+            <div class="col-sm-6">
+                <table id="stats">
+                    <tr>
+                        <th class="border" colspan="6"></th>
+                    </tr>
+                    <tr id="text">
+                    </tr>
+                    <tr>
+                        <th class="border" colspan="6"></th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </main>
+    
 	<footer class="container">
 
 	</footer>
 
 	<script type="text/javascript" src="js/utils.js"></script>
+	<script type="text/javascript" src="js/filter.js"></script>
+	<script type="text/javascript" src="js/entryrender.js"></script>
 	<script type="text/javascript" src="js/history.js"></script>
 	<script type="text/javascript" src="js/rules.js"></script>
 	<script type="text/javascript" src="data/rules.json"></script>
